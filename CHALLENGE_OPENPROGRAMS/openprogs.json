@@ -1,0 +1,11 @@
+{
+"FileName": "challenge_loader_python.dll",
+"Description": "challenge de progs abiertos",
+"Props": {
+  "module_python": "openprogs",
+  "validity_time": 3600,
+  "refresh_time": 1000,
+  "process_list": "chrome.exe,notepad.exe,Teams.exe,ccSvcHst.exe,sisipsutil.exe,vpnui.exe,ibmpmsvc.exe"
+},
+"Requirements": "none" 
+}

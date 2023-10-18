@@ -1,0 +1,14 @@
+﻿  challenge_intranet.cpp
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(96,34): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(100,9): warning C4473: 'printf' : not enough arguments passed for format string
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(100,9): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(100,9): message : the missing variadic argument 2 is required by format string '%d'
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(115,35): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\challenge_intranet.cpp(136,20): warning C4018: '<': signed/unsigned mismatch
+     Creating library C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\x64\Release\CHALLENGE_INTRANET.lib and object C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\x64\Release\CHALLENGE_INTRANET.exp
+  Generating code
+  3 of 16 functions (18.8%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  CHALLENGE_INTRANET.vcxproj -> C:\Users\guerrero\VisualStudio\source\SECUREWORLD\CHALLENGE_INTRANET\x64\Release\CHALLENGE_INTRANET.dll
