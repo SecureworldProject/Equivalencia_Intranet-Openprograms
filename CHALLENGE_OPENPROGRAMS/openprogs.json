@@ -5,7 +5,7 @@
   "module_python": "openprogs",
   "validity_time": 3600,
   "refresh_time": 1000,
-  "process_list": "chrome.exe,notepad.exe,Teams.exe,ccSvcHst.exe,sisipsutil.exe,vpnui.exe,ibmpmsvc.exe"
+  "process_list": "chrome.exe,notepad.exe,Teams.exe,ccSvcHst.exe,sisipsutil.exe,vpnui.exe,ibmpmsvc.exe,MsMpEng.exe"
 },
 "Requirements": "none" 
 }

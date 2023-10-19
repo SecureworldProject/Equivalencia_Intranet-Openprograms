@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <vector>
+#include <bitset>
+using namespace std;
 
 
 
@@ -28,7 +31,7 @@ char** urls = NULL;
 /////  FUNCTION DEFINITIONS  /////
 void getChallengeParameters();
 BOOL ping(char* url);
-void setBitTrue(byte * buf, int pos);
+void setBitTrue(byte* buf, int pos);
 
 
 
@@ -61,12 +64,8 @@ int init(struct ChallengeEquivalenceGroup* group_param, struct Challenge* challe
 	return result;
 }
 
-void printBinary(byte num) {
-	printf("******* Result: ");
-	for (int i = 7; i >= 0; --i) {
-		std::cout << ((num >> i) & 1); // Obtén el i-ésimo bit y imprímelo
-	}
-	printf("\n");
+string getBinaryString(byte num) {
+	return bitset<8>(num).to_string();
 }
 
 int executeChallenge() {
@@ -94,15 +93,18 @@ int executeChallenge() {
 	for (size_t i = 0; i < urls_amount; i++) {      // Ping each url and set the corresponding bit to 1 if response was successful
 		if (ping(urls[i])) {
 			setBitTrue(urls_results_buf, i);
-			printf("******* set bit true in pos = %llu\n", i);
+			//printf("******* set bit true in pos = %llu\n", i);
 		}
 	}
-	printf("******* urls_results_buf = 0x%02hhx    or   %d\n", urls_results_buf[0]);
-	printBinary(urls_results_buf[0]);
-
+	//printf("******* urls_results_buf = 0x%02hhx    or   %d\n", urls_results_buf[0], urls_results_buf[0]);
+	string result_string = getBinaryString(urls_results_buf[0]);
+	printf("******* Result: %s,%zu \n", result_string.c_str(), result_string.length());
+	byte* result_buffer = new byte[result_string.size() + 1];  // +1 para el carácter nulo del final de la cadena
+	std::memcpy(result_buffer, result_string.c_str(), result_string.size() + 1);
+	
 	// Prepare the key before the critical section, so it is as smmall as possible
-	size_of_key = urls_results_size;
-	key_data = urls_results_buf;
+	size_of_key = result_string.size();
+	key_data = result_buffer;
 	new_expiration_time = time(NULL) + validity_time;
 
 
@@ -139,11 +141,13 @@ void getChallengeParameters() {
 			validity_time = (int)(prop_i.value->u.integer);
 			CHPRINT(" * Property: validity_time\n");
 			CHPRINT("     - Value: %d\n", validity_time);
-		} else if (strcmp(prop_i.name, "refresh_time") == 0) {
+		}
+		else if (strcmp(prop_i.name, "refresh_time") == 0) {
 			refresh_time = (int)(prop_i.value->u.integer);
 			CHPRINT(" * Property: refresh_time\n");
 			CHPRINT("     - Value: %d\n", refresh_time);
-		} else {
+		}
+		else {
 			// Challenge specific parameters (none)
 			if (strcmp(prop_i.name, "urls") == 0) {
 				// Be careful when adding servers outside the intranet. Servers of those URLs could be down for any reason which would lead to a change in the challenge subkey
@@ -164,7 +168,8 @@ void getChallengeParameters() {
 					strcpy_s(urls[j], str_len + 1, url_j->u.string.ptr);
 					CHPRINT("     - Value: %s\n", urls[j]);
 				}
-			} else {
+			}
+			else {
 				CHPRINT("Unknown property\n");
 			}
 		}
@@ -219,10 +224,12 @@ BOOL ping(char* url) {
 					if (tmp_ptr[-1] == '0' && tmp_ptr[-2] == '(') {                                                     // Looking for:   "(0%"
 						//CHPRINT("All responses received\n");
 						result = TRUE;
-					} else if (tmp_ptr[-1] == '0' && tmp_ptr[-2] == '0' && tmp_ptr[-3] == '1' && tmp_ptr[-4] == '(') {  // Looking for: "(100%"
-						//CHPRINT("No responses received\n");
+					}
+					else if (tmp_ptr[-1] == '0' && tmp_ptr[-2] == '0' && tmp_ptr[-3] == '1' && tmp_ptr[-4] == '(') {  // Looking for: "(100%"
+					 //CHPRINT("No responses received\n");
 						result = FALSE;
-					} else {
+					}
+					else {
 						CHPRINT("Inconsistent responses, retrying...\n");
 						retry = TRUE;
 						//result = TRUE;	If it was accessible at least one time, it is "accessible" at least in general
@@ -236,11 +243,11 @@ BOOL ping(char* url) {
 	}
 
 
-	CHPRINT("Result: %s\n", (result? "OK":"UNREACHABLE"));
+	CHPRINT("Result: %s\n", (result ? "OK" : "UNREACHABLE"));
 	return result;
 }
 
-void setBitTrue(byte* buf, int pos){
+void setBitTrue(byte* buf, int pos) {
 	int complete_bytes = pos / 8;
 	int extra_bits = pos % 8;
 	byte mask = 0x01 << extra_bits;
